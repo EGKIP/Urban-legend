@@ -1,7 +1,4 @@
-"""
-Seed script for populating the database with mock data.
-Run with: python -m app.seed
-"""
+"""Seed database with mock data. Run: python -m app.seed"""
 
 from app.db import SessionLocal, engine, Base
 from app.models import Town, Place, Legend
@@ -77,7 +74,6 @@ MOCK_LEGENDS = {
 
 
 def seed_database():
-    """Populate database with mock data."""
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
 

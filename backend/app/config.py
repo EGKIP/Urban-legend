@@ -3,8 +3,6 @@ from functools import lru_cache
 
 
 class Settings(BaseSettings):
-    """Application settings loaded from environment variables."""
-
     app_env: str = "development"
     debug: bool = True
 
@@ -25,6 +23,5 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    """Cached settings instance."""
     return Settings()
 

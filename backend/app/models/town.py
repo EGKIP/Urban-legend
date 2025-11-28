@@ -6,8 +6,6 @@ from app.db import Base
 
 
 class Town(Base):
-    """Represents a town/city identified by ZIP code."""
-
     __tablename__ = "towns"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -22,7 +20,6 @@ class Town(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-    # Relationships
     places = relationship("Place", back_populates="town", cascade="all, delete-orphan")
     legend = relationship("Legend", back_populates="town", uselist=False, cascade="all, delete-orphan")
 

@@ -19,17 +19,12 @@ app.add_middleware(
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint."""
     return {"status": "healthy", "service": "urban-legend-api"}
 
 
 @app.get("/api/town")
 async def get_town(zip: str):
-    """
-    Get town data by ZIP code.
-    Returns city info, hotels, restaurants, activities, and legend.
-    """
-    # Placeholder response for Day 1
+    # Placeholder response
     return {
         "town": {
             "zip": zip,
