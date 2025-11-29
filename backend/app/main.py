@@ -1,5 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+
+from app.services.zip_lookup import ZipLookupService
+
+zip_service = ZipLookupService()
 
 app = FastAPI(
     title="Urban Legend API",
@@ -24,16 +28,15 @@ async def health_check():
 
 @app.get("/api/town")
 async def get_town(zip: str):
-    # Placeholder response
+    if len(zip) != 5 or not zip.isdigit():
+        raise HTTPException(status_code=400, detail="Invalid ZIP code format")
+
+    town_data = await zip_service.lookup(zip)
+    if not town_data:
+        raise HTTPException(status_code=404, detail="ZIP code not found")
+
     return {
-        "town": {
-            "zip": zip,
-            "city": "Sample City",
-            "state": "CA",
-            "lat": 37.7749,
-            "lon": -122.4194,
-            "last_refreshed": None,
-        },
+        "town": town_data,
         "hotels": [],
         "restaurants": [],
         "activities": [],
