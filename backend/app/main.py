@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.services.zip_lookup import ZipLookupService
+from app.services.mock_data import get_mock_data
 
 zip_service = ZipLookupService()
 
@@ -35,11 +36,12 @@ async def get_town(zip: str):
     if not town_data:
         raise HTTPException(status_code=404, detail="ZIP code not found")
 
+    places = get_mock_data(zip)
     return {
         "town": town_data,
-        "hotels": [],
-        "restaurants": [],
-        "activities": [],
-        "legend": None,
+        "hotels": places["hotels"],
+        "restaurants": places["restaurants"],
+        "activities": places["activities"],
+        "legend": places["legend"],
     }
 
