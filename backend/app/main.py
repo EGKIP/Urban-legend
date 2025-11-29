@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.services.zip_lookup import ZipLookupService
+from app.services.yelp_service import yelp_service
 from app.services.mock_data import get_mock_data
 
 zip_service = ZipLookupService()
@@ -36,12 +37,29 @@ async def get_town(zip: str):
     if not town_data:
         raise HTTPException(status_code=404, detail="ZIP code not found")
 
-    places = get_mock_data(zip)
+    # Try Yelp API first, fall back to mock data
+    places = await yelp_service.get_all_places(
+        town_data["lat"], town_data["lon"], limit=5
+    )
+
+    # Use mock data as fallback if Yelp returns nothing
+    if not places["hotels"] and not places["restaurants"]:
+        mock = get_mock_data(zip)
+        places = {
+            "hotels": mock["hotels"],
+            "restaurants": mock["restaurants"],
+            "activities": mock["activities"],
+        }
+        legend = mock["legend"]
+    else:
+        # For now, use mock legend until we add AI generation
+        legend = get_mock_data(zip).get("legend")
+
     return {
         "town": town_data,
         "hotels": places["hotels"],
         "restaurants": places["restaurants"],
         "activities": places["activities"],
-        "legend": places["legend"],
+        "legend": legend,
     }
 
