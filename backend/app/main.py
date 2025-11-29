@@ -1,12 +1,13 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.services.zip_lookup import ZipLookupService
 from app.services.yelp_service import yelp_service
 from app.services.mock_data import get_mock_data
+from app.services.news_service import news_service
 
 zip_service = ZipLookupService()
 
@@ -65,4 +66,14 @@ async def get_town(zip: str):
         "activities": places["activities"],
         "legend": legend,
     }
+
+
+@app.get("/api/trending-news")
+async def get_trending_news(city: str = Query(..., description="City name")):
+    """Fetch local news for a city from Google News RSS."""
+    if not city or len(city.strip()) < 2:
+        raise HTTPException(status_code=400, detail="Invalid city name")
+
+    articles = await news_service.get_news(city.strip(), limit=5)
+    return {"articles": articles}
 

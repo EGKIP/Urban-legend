@@ -2,7 +2,8 @@ import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import TownHeader from '../components/TownHeader'
 import DashboardCard from '../components/DashboardCard'
-import { BuildingIcon, ForkKnifeIcon, CompassIcon, BookOpenIcon, XIcon, WarningIcon, TrendingUpIcon } from '../components/Icons'
+import TrendingNews from '../components/TrendingNews'
+import { BuildingIcon, ForkKnifeIcon, CompassIcon, BookOpenIcon, XIcon, WarningIcon, TrendingUpIcon, NewspaperIcon } from '../components/Icons'
 
 const API_URL = 'http://localhost:8000'
 
@@ -85,6 +86,23 @@ export default function Town() {
               >
                 <XIcon className="w-4 h-4" />
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* Local News Section */}
+        {data?.town?.city && !loading && (
+          <div className="mb-5 bg-slate-900/70 rounded-xl border border-slate-800/50 shadow-lg shadow-black/10">
+            <div className="px-5 py-4 border-b border-slate-800/40">
+              <h3 className="text-base font-semibold text-slate-100 flex items-center gap-2.5">
+                <span className="text-orange-400">
+                  <NewspaperIcon className="w-4.5 h-4.5" />
+                </span>
+                Local News
+              </h3>
+            </div>
+            <div className="p-4">
+              <TrendingNews city={data.town.city} />
             </div>
           </div>
         )}
