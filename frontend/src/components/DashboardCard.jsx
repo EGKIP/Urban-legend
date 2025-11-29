@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from './Icons'
+import { ChevronRightIcon, StarIcon } from './Icons'
 
 export default function DashboardCard({ title, icon: Icon, items, loading, emptyText }) {
   return (
@@ -14,7 +14,7 @@ export default function DashboardCard({ title, icon: Icon, items, loading, empty
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="animate-pulse flex items-center gap-3">
-              <div className="w-10 h-10 bg-slate-800 rounded-lg" />
+              <div className="w-12 h-12 bg-slate-800 rounded-lg" />
               <div className="flex-1">
                 <div className="h-4 bg-slate-800 rounded w-3/4 mb-2" />
                 <div className="h-3 bg-slate-800 rounded w-1/2" />
@@ -25,19 +25,7 @@ export default function DashboardCard({ title, icon: Icon, items, loading, empty
       ) : items?.length > 0 ? (
         <ul className="space-y-2">
           {items.map((item, idx) => (
-            <li
-              key={idx}
-              className="flex items-center gap-3 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-all cursor-pointer group/item"
-            >
-              <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center flex-shrink-0 border border-orange-500/20 group-hover/item:border-orange-500/40 transition-colors">
-                <span className="text-orange-400 font-semibold text-sm">{idx + 1}</span>
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-slate-100 font-medium truncate group-hover/item:text-orange-400 transition-colors">{item.name}</p>
-                <p className="text-slate-500 text-sm truncate">{item.address || item.description}</p>
-              </div>
-              <ChevronRightIcon className="w-4 h-4 text-slate-600 group-hover/item:text-orange-500 transition-colors" />
-            </li>
+            <PlaceItem key={item.id || idx} item={item} />
           ))}
         </ul>
       ) : (
@@ -49,6 +37,40 @@ export default function DashboardCard({ title, icon: Icon, items, loading, empty
         </div>
       )}
     </div>
+  )
+}
+
+function PlaceItem({ item }) {
+  return (
+    <li className="flex items-center gap-3 p-2.5 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-all cursor-pointer group/item">
+      {item.image_url ? (
+        <img
+          src={item.image_url}
+          alt={item.name}
+          className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+        />
+      ) : (
+        <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center flex-shrink-0">
+          <span className="text-slate-600 text-xs">No img</span>
+        </div>
+      )}
+      <div className="min-w-0 flex-1">
+        <p className="text-slate-100 font-medium text-sm truncate group-hover/item:text-orange-400 transition-colors">
+          {item.name}
+        </p>
+        <div className="flex items-center gap-2 text-xs text-slate-500">
+          {item.rating && (
+            <span className="flex items-center gap-0.5 text-gold-400">
+              <StarIcon className="w-3 h-3" />
+              {item.rating}
+            </span>
+          )}
+          {item.price && <span className="text-green-500">{item.price}</span>}
+          {item.address && <span className="truncate">{item.address}</span>}
+        </div>
+      </div>
+      <ChevronRightIcon className="w-4 h-4 text-slate-600 group-hover/item:text-orange-500 transition-colors flex-shrink-0" />
+    </li>
   )
 }
 
