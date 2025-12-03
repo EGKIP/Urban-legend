@@ -90,7 +90,6 @@ export default function Town() {
           </div>
         )}
 
-        {/* Local News Section */}
         {data?.town?.city && !loading && (
           <div className="mb-5 bg-slate-900/70 rounded-xl border border-slate-800/50 shadow-lg shadow-black/10">
             <div className="px-5 py-4 border-b border-slate-800/40">

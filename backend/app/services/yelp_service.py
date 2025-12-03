@@ -1,7 +1,4 @@
-"""Yelp Fusion API client for fetching POI data."""
-
 import os
-from typing import Optional
 import httpx
 
 YELP_API_KEY = os.getenv("YELP_API_KEY", "")

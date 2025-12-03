@@ -11,16 +11,11 @@ from app.services.news_service import news_service
 
 zip_service = ZipLookupService()
 
-app = FastAPI(
-    title="Urban Legend API",
-    description="Location-based travel and storytelling dashboard API",
-    version="0.1.0",
-)
+app = FastAPI(title="Urban Legend API", version="0.1.0")
 
-# CORS configuration for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Vite dev server
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -41,12 +36,8 @@ async def get_town(zip: str):
     if not town_data:
         raise HTTPException(status_code=404, detail="ZIP code not found")
 
-    # Try Yelp API first, fall back to mock data
-    places = await yelp_service.get_all_places(
-        town_data["lat"], town_data["lon"], limit=15
-    )
+    places = await yelp_service.get_all_places(town_data["lat"], town_data["lon"], limit=15)
 
-    # Use mock data as fallback if Yelp returns nothing
     if not places["hotels"] and not places["restaurants"]:
         mock = get_mock_data(zip)
         places = {
@@ -56,7 +47,6 @@ async def get_town(zip: str):
         }
         legend = mock["legend"]
     else:
-        # For now, use mock legend until we add AI generation
         legend = get_mock_data(zip).get("legend")
 
     return {
@@ -69,11 +59,9 @@ async def get_town(zip: str):
 
 
 @app.get("/api/trending-news")
-async def get_trending_news(city: str = Query(..., description="City name")):
-    """Fetch local news for a city from Google News RSS."""
+async def get_trending_news(city: str = Query(...)):
     if not city or len(city.strip()) < 2:
         raise HTTPException(status_code=400, detail="Invalid city name")
-
-    articles = await news_service.get_news(city.strip(), limit=5)
+    articles = await news_service.get_news(city.strip(), limit=12)
     return {"articles": articles}
 
