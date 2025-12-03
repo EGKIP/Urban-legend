@@ -43,7 +43,7 @@ async def get_town(zip: str):
 
     # Try Yelp API first, fall back to mock data
     places = await yelp_service.get_all_places(
-        town_data["lat"], town_data["lon"], limit=5
+        town_data["lat"], town_data["lon"], limit=15
     )
 
     # Use mock data as fallback if Yelp returns nothing
