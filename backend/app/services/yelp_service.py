@@ -63,17 +63,17 @@ class YelpService:
             "categories": [c.get("title") for c in biz.get("categories", [])],
         }
 
-    async def get_hotels(self, lat: float, lon: float, limit: int = 5) -> list[dict]:
+    async def get_hotels(self, lat: float, lon: float, limit: int = 15) -> list[dict]:
         return await self._search(lat, lon, "hotels,hostels,bedbreakfast", limit)
 
-    async def get_restaurants(self, lat: float, lon: float, limit: int = 5) -> list[dict]:
+    async def get_restaurants(self, lat: float, lon: float, limit: int = 15) -> list[dict]:
         return await self._search(lat, lon, "restaurants,food", limit)
 
-    async def get_activities(self, lat: float, lon: float, limit: int = 5) -> list[dict]:
+    async def get_activities(self, lat: float, lon: float, limit: int = 15) -> list[dict]:
         return await self._search(lat, lon, "arts,tours,active", limit)
 
     async def get_all_places(
-        self, lat: float, lon: float, limit: int = 5
+        self, lat: float, lon: float, limit: int = 15
     ) -> dict[str, list[dict]]:
         hotels = await self.get_hotels(lat, lon, limit)
         restaurants = await self.get_restaurants(lat, lon, limit)
