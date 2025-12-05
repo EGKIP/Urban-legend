@@ -13,16 +13,20 @@ class Town(Base):
     city = Column(String(100), nullable=False)
     state = Column(String(2), nullable=False)
     state_name = Column(String(50))
-    county = Column(String(100))
     lat = Column(Float, nullable=False)
     lon = Column(Float, nullable=False)
-    timezone = Column(String(50))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     places = relationship("Place", back_populates="town", cascade="all, delete-orphan")
     legend = relationship("Legend", back_populates="town", uselist=False, cascade="all, delete-orphan")
 
-    def __repr__(self):
-        return f"<Town {self.city}, {self.state} ({self.zip_code})>"
+    def to_dict(self):
+        return {
+            "zip": self.zip_code,
+            "city": self.city,
+            "state": self.state,
+            "state_name": self.state_name,
+            "lat": self.lat,
+            "lon": self.lon,
+        }
 

@@ -29,8 +29,9 @@ A location-based travel discovery and AI storytelling web app. Enter any US ZIP 
 - [x] ZIP code lookup
 - [x] Yelp API integration (hotels, restaurants, activities)
 - [x] Local news feed
-- [ ] PostgreSQL caching
-- [ ] AI legend generation
+- [x] PostgreSQL caching (towns, places, legends)
+- [x] AI legend generation (Groq + Llama 3.1)
+- [ ] Regenerate legend button
 - [ ] Weather widget
 - [ ] Interactive map view
 
