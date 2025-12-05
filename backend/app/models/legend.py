@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, Text, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -10,7 +10,6 @@ class Legend(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     town_id = Column(Integer, ForeignKey("towns.id"), unique=True, nullable=False, index=True)
-    title = Column(String(200), nullable=False)
     story = Column(Text, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -18,7 +17,6 @@ class Legend(Base):
 
     def to_dict(self):
         return {
-            "title": self.title,
             "story": self.story,
         }
 
