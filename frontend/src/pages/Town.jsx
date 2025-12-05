@@ -77,8 +77,8 @@ export default function Town() {
           <div className="mb-5 p-5 bg-slate-900/60 rounded-xl border border-gold-500/15">
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
-                <h3 className="text-sm font-semibold text-gold-400 mb-2">{data.legend.title}</h3>
-                <p className="text-slate-300 text-sm leading-relaxed">{data.legend.story}</p>
+                <h3 className="text-sm font-semibold text-gold-400 mb-2">The Legend of {data.town?.city}</h3>
+                <p className="text-slate-300 text-sm leading-relaxed">{data.legend}</p>
               </div>
               <button
                 onClick={() => setShowLegend(false)}

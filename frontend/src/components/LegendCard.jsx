@@ -18,8 +18,7 @@ export default function LegendCard({ legend, loading }) {
         </div>
       ) : legend ? (
         <div>
-          <h3 className="text-lg font-semibold text-white mb-2">{legend.title}</h3>
-          <p className="text-slate-300 leading-relaxed">{legend.story}</p>
+          <p className="text-slate-300 leading-relaxed">{legend}</p>
         </div>
       ) : (
         <p className="text-slate-500 italic">
