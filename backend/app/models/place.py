@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Text
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -17,17 +17,27 @@ class Place(Base):
     lat = Column(Float)
     lon = Column(Float)
     rating = Column(Float)
-    price_level = Column(Integer)
+    review_count = Column(Integer, default=0)
+    price = Column(String(5))
     image_url = Column(String(500))
-    phone = Column(String(20))
-    website = Column(String(300))
-    cuisine_type = Column(String(100))
-    amenities = Column(Text)
+    url = Column(String(500))
+    phone = Column(String(30))
+    categories = Column(JSON)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     town = relationship("Town", back_populates="places")
 
-    def __repr__(self):
-        return f"<Place {self.name} ({self.place_type})>"
+    def to_dict(self):
+        return {
+            "id": self.external_id,
+            "name": self.name,
+            "rating": self.rating,
+            "review_count": self.review_count,
+            "price": self.price,
+            "image_url": self.image_url,
+            "url": self.url,
+            "phone": self.phone,
+            "address": self.address,
+            "categories": self.categories or [],
+        }
 
