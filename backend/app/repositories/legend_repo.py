@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlalchemy.orm import Session
 
-from app.models import Legend, Town
+from app.models import Legend
 
 
 class LegendRepository:
@@ -18,15 +18,7 @@ class LegendRepository:
         self.db.refresh(legend)
         return legend
 
-    def update(self, legend: Legend, story: str) -> Legend:
-        legend.story = story
+    def delete_by_town(self, town_id: int) -> None:
+        self.db.query(Legend).filter(Legend.town_id == town_id).delete()
         self.db.commit()
-        self.db.refresh(legend)
-        return legend
-
-    def get_or_generate(self, town: Town, generator) -> str:
-        existing = self.get_by_town(town.id)
-        if existing:
-            return existing.story
-        return None
 

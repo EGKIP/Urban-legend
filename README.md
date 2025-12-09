@@ -31,7 +31,7 @@ A location-based travel discovery and AI storytelling web app. Enter any US ZIP 
 - [x] Local news feed
 - [x] PostgreSQL caching (towns, places, legends)
 - [x] AI legend generation (Groq + Llama 3.1)
-- [ ] Regenerate legend button
+- [x] Regenerate legend button
 - [ ] Weather widget
 - [ ] Interactive map view
 

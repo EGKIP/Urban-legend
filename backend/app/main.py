@@ -69,8 +69,12 @@ async def get_town(zip: str, db: Session = Depends(get_db)):
     if places["hotels"] or places["restaurants"]:
         town_repo.save_places(town, places)
 
-    legend = await legend_service.generate(town.city, town.state)
-    legend_repo.create(town.id, legend)
+    existing_legend = legend_repo.get_by_town(town.id)
+    if existing_legend:
+        legend = existing_legend.story
+    else:
+        legend = await legend_service.generate(town.city, town.state)
+        legend_repo.create(town.id, legend)
 
     if not places["hotels"] and not places["restaurants"]:
         mock = get_mock_data(zip)
@@ -95,4 +99,23 @@ async def get_trending_news(city: str = Query(...)):
         raise HTTPException(status_code=400, detail="Invalid city name")
     articles = await news_service.get_news(city.strip(), limit=12)
     return {"articles": articles}
+
+
+@app.post("/api/regenerate-legend")
+async def regenerate_legend(zip: str = Query(...), db: Session = Depends(get_db)):
+    if len(zip) != 5 or not zip.isdigit():
+        raise HTTPException(status_code=400, detail="Invalid ZIP code format")
+
+    town_repo = TownRepository(db)
+    legend_repo = LegendRepository(db)
+    town = town_repo.get_by_zip(zip)
+
+    if not town:
+        raise HTTPException(status_code=404, detail="Town not found")
+
+    legend_repo.delete_by_town(town.id)
+    new_legend = await legend_service.generate(town.city, town.state)
+    legend_repo.create(town.id, new_legend)
+
+    return {"legend": new_legend}
 
