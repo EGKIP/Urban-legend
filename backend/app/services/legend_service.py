@@ -3,10 +3,11 @@ from groq import Groq
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-SYSTEM_PROMPT = """You are a storyteller who crafts urban legends about American towns.
-Do not use emojis or slang. Tone should be mysterious, eerie, or serious.
-Write in third person. Keep stories between 150-250 words.
-Include local flavor based on the city and state provided."""
+SYSTEM_PROMPT = """You are a poet who writes short, haunting verses about American towns.
+Do not use emojis or slang. Tone: mysterious, eerie, atmospheric.
+Write a poem of 3-4 short stanzas (4 lines each).
+Include local references to the city.
+Do not include a title. End with a blank line then: — Urban Legend AI"""
 
 
 class LegendService:
@@ -16,14 +17,14 @@ class LegendService:
                 model="llama-3.1-8b-instant",
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": f"Write an urban legend about {city}, {state}."}
+                    {"role": "user", "content": f"Write a haunting poem about the legends of {city}, {state}."}
                 ],
                 temperature=0.9,
-                max_tokens=400
+                max_tokens=300
             )
             return response.choices[0].message.content
         except Exception:
-            return f"The legend of {city} remains shrouded in mystery..."
+            return f"In {city}'s shadow, secrets sleep...\n\n— Urban Legend AI"
 
 
 legend_service = LegendService()

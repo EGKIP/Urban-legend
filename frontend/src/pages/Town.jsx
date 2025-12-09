@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import TownHeader from '../components/TownHeader'
 import DashboardCard from '../components/DashboardCard'
 import TrendingNews from '../components/TrendingNews'
-import { BuildingIcon, ForkKnifeIcon, CompassIcon, BookOpenIcon, XIcon, WarningIcon, TrendingUpIcon, NewspaperIcon } from '../components/Icons'
+import { BuildingIcon, ForkKnifeIcon, CompassIcon, BookOpenIcon, XIcon, WarningIcon, TrendingUpIcon, NewspaperIcon, RefreshIcon } from '../components/Icons'
 
 const API_URL = 'http://localhost:8000'
 
@@ -13,6 +13,7 @@ export default function Town() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showLegend, setShowLegend] = useState(false)
+  const [regenerating, setRegenerating] = useState(false)
 
   useEffect(() => {
     const fetchTown = async () => {
@@ -31,6 +32,19 @@ export default function Town() {
     }
     fetchTown()
   }, [zip])
+
+  const regenerateLegend = async () => {
+    setRegenerating(true)
+    try {
+      const res = await fetch(`${API_URL}/api/regenerate-legend?zip=${zip}`, { method: 'POST' })
+      if (res.ok) {
+        const json = await res.json()
+        setData(prev => ({ ...prev, legend: json.legend }))
+      }
+    } finally {
+      setRegenerating(false)
+    }
+  }
 
   if (error) {
     return (
@@ -75,11 +89,8 @@ export default function Town() {
 
         {showLegend && data?.legend && (
           <div className="mb-5 p-5 bg-slate-900/60 rounded-xl border border-gold-500/15">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
-                <h3 className="text-sm font-semibold text-gold-400 mb-2">The Legend of {data.town?.city}</h3>
-                <p className="text-slate-300 text-sm leading-relaxed">{data.legend}</p>
-              </div>
+            <div className="flex items-start justify-between gap-4 mb-3">
+              <h3 className="text-sm font-semibold text-gold-400">The Legend of {data.town?.city}</h3>
               <button
                 onClick={() => setShowLegend(false)}
                 className="text-slate-500 hover:text-slate-300 p-1 rounded transition-colors"
@@ -87,6 +98,15 @@ export default function Town() {
                 <XIcon className="w-4 h-4" />
               </button>
             </div>
+            <pre className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap font-sans">{data.legend}</pre>
+            <button
+              onClick={regenerateLegend}
+              disabled={regenerating}
+              className="mt-4 flex items-center gap-1.5 px-3 py-1.5 text-xs text-slate-400 hover:text-gold-400 border border-slate-700 hover:border-gold-500/40 rounded-lg transition-all disabled:opacity-50"
+            >
+              <RefreshIcon className={`w-3 h-3 ${regenerating ? 'animate-spin' : ''}`} />
+              {regenerating ? 'Generating...' : 'New Legend'}
+            </button>
           </div>
         )}
 
