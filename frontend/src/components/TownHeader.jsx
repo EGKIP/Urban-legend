@@ -1,4 +1,5 @@
 import { MapPinIcon } from './Icons'
+import WeatherCard from './WeatherCard'
 
 export default function TownHeader({ town, loading }) {
   if (loading) {
@@ -43,11 +44,12 @@ export default function TownHeader({ town, loading }) {
           </div>
 
           <div className="flex items-center gap-2.5">
+            <WeatherCard lat={town.lat} lon={town.lon} />
             <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700/40">
               <p className="text-slate-500 text-[10px] uppercase tracking-wider font-medium">ZIP</p>
               <p className="text-slate-200 font-semibold text-sm">{town.zip_code}</p>
             </div>
-            <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700/40">
+            <div className="hidden sm:block px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700/40">
               <p className="text-slate-500 text-[10px] uppercase tracking-wider font-medium">Coordinates</p>
               <p className="text-slate-300 font-mono text-xs">{town.lat?.toFixed(4)}, {town.lon?.toFixed(4)}</p>
             </div>

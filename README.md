@@ -32,7 +32,7 @@ A location-based travel discovery and AI storytelling web app. Enter any US ZIP 
 - [x] PostgreSQL caching (towns, places, legends)
 - [x] AI legend generation (Groq + Llama 3.1)
 - [x] Regenerate legend button
-- [ ] Weather widget
+- [x] Weather widget
 - [ ] Interactive map view
 
 ## License
