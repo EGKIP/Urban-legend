@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     yelp_api_key: str = ""
     yelp_api_base_url: str = "https://api.yelp.com/v3"
     groq_api_key: str = ""
+    openweather_api_key: str = ""
 
     class Config:
         env_file = ".env"

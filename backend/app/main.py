@@ -11,9 +11,11 @@ from app.services.yelp_service import yelp_service
 from app.services.mock_data import get_mock_data
 from app.services.news_service import news_service
 from app.services.legend_service import legend_service
+from app.services.weather_service import WeatherService
 from app.repositories import TownRepository, LegendRepository
 
 zip_service = ZipLookupService()
+weather_service = WeatherService()
 
 app = FastAPI(title="Urban Legend API", version="0.1.0")
 
@@ -118,4 +120,12 @@ async def regenerate_legend(zip: str = Query(...), db: Session = Depends(get_db)
     legend_repo.create(town.id, new_legend)
 
     return {"legend": new_legend}
+
+
+@app.get("/api/weather")
+async def get_weather(lat: float = Query(...), lon: float = Query(...)):
+    weather = await weather_service.get_weather(lat, lon)
+    if not weather:
+        raise HTTPException(status_code=503, detail="Weather service unavailable")
+    return weather
 
