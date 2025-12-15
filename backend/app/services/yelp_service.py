@@ -47,6 +47,7 @@ class YelpService:
 
     def _format_business(self, biz: dict) -> dict:
         location = biz.get("location", {})
+        coords = biz.get("coordinates", {})
         return {
             "id": biz.get("id"),
             "name": biz.get("name"),
@@ -58,6 +59,8 @@ class YelpService:
             "phone": biz.get("display_phone"),
             "address": ", ".join(location.get("display_address", [])),
             "categories": [c.get("title") for c in biz.get("categories", [])],
+            "lat": coords.get("latitude"),
+            "lon": coords.get("longitude"),
         }
 
     async def get_hotels(self, lat: float, lon: float, limit: int = 15) -> list[dict]:

@@ -33,7 +33,7 @@ A location-based travel discovery and AI storytelling web app. Enter any US ZIP 
 - [x] AI legend generation (Groq + Llama 3.1)
 - [x] Regenerate legend button
 - [x] Weather widget
-- [ ] Interactive map view
+- [x] Interactive map view
 
 ## License
 
