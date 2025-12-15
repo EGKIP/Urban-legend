@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react'
 import TownHeader from '../components/TownHeader'
 import DashboardCard from '../components/DashboardCard'
 import TrendingNews from '../components/TrendingNews'
-import { BuildingIcon, ForkKnifeIcon, CompassIcon, BookOpenIcon, XIcon, WarningIcon, TrendingUpIcon, NewspaperIcon, RefreshIcon } from '../components/Icons'
+import MapView from '../components/MapView'
+import { BuildingIcon, ForkKnifeIcon, CompassIcon, BookOpenIcon, XIcon, WarningIcon, TrendingUpIcon, NewspaperIcon, RefreshIcon, MapIcon, ListIcon } from '../components/Icons'
 
 const API_URL = 'http://localhost:8000'
 
@@ -14,6 +15,7 @@ export default function Town() {
   const [error, setError] = useState(null)
   const [showLegend, setShowLegend] = useState(false)
   const [regenerating, setRegenerating] = useState(false)
+  const [viewMode, setViewMode] = useState('list')
 
   useEffect(() => {
     const fetchTown = async () => {
@@ -76,15 +78,24 @@ export default function Town() {
               )}
             </h2>
           </div>
-          {data?.legend && (
+          <div className="flex items-center gap-2">
+            {data?.legend && (
+              <button
+                onClick={() => setShowLegend(!showLegend)}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gold-400 hover:text-gold-300 border border-gold-500/25 hover:border-gold-500/40 rounded-lg transition-all hover:bg-gold-500/5"
+              >
+                <BookOpenIcon className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Urban Legend</span>
+              </button>
+            )}
             <button
-              onClick={() => setShowLegend(!showLegend)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gold-400 hover:text-gold-300 border border-gold-500/25 hover:border-gold-500/40 rounded-lg transition-all hover:bg-gold-500/5"
+              onClick={() => setViewMode(viewMode === 'list' ? 'map' : 'list')}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-400 hover:text-slate-200 border border-slate-700 hover:border-slate-600 rounded-lg transition-all"
             >
-              <BookOpenIcon className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Urban Legend</span>
+              {viewMode === 'list' ? <MapIcon className="w-3.5 h-3.5" /> : <ListIcon className="w-3.5 h-3.5" />}
+              <span className="hidden sm:inline">{viewMode === 'list' ? 'Map' : 'List'}</span>
             </button>
-          )}
+          </div>
         </div>
 
         {showLegend && data?.legend && (
@@ -126,29 +137,38 @@ export default function Town() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <DashboardCard
-            title="Top Hotels"
-            icon={BuildingIcon}
-            items={data?.hotels}
-            loading={loading}
-            emptyText="Hotel data coming soon..."
+        {viewMode === 'map' && data?.town ? (
+          <MapView
+            hotels={data?.hotels}
+            restaurants={data?.restaurants}
+            activities={data?.activities}
+            center={{ lat: data.town.lat, lon: data.town.lon }}
           />
-          <DashboardCard
-            title="Popular Eats"
-            icon={ForkKnifeIcon}
-            items={data?.restaurants}
-            loading={loading}
-            emptyText="Restaurant data coming soon..."
-          />
-          <DashboardCard
-            title="Things to Do"
-            icon={CompassIcon}
-            items={data?.activities}
-            loading={loading}
-            emptyText="Activity data coming soon..."
-          />
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <DashboardCard
+              title="Top Hotels"
+              icon={BuildingIcon}
+              items={data?.hotels}
+              loading={loading}
+              emptyText="Hotel data coming soon..."
+            />
+            <DashboardCard
+              title="Popular Eats"
+              icon={ForkKnifeIcon}
+              items={data?.restaurants}
+              loading={loading}
+              emptyText="Restaurant data coming soon..."
+            />
+            <DashboardCard
+              title="Things to Do"
+              icon={CompassIcon}
+              items={data?.activities}
+              loading={loading}
+              emptyText="Activity data coming soon..."
+            />
+          </div>
+        )}
 
         <StatsBar data={data} loading={loading} />
       </div>
