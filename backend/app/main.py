@@ -12,6 +12,7 @@ from app.services.mock_data import get_mock_data
 from app.services.news_service import news_service
 from app.services.legend_service import legend_service
 from app.services.weather_service import WeatherService
+from app.services.geocode_service import geocode_service
 from app.repositories import TownRepository, LegendRepository
 
 zip_service = ZipLookupService()
@@ -128,4 +129,13 @@ async def get_weather(lat: float = Query(...), lon: float = Query(...)):
     if not weather:
         raise HTTPException(status_code=503, detail="Weather service unavailable")
     return weather
+
+
+@app.get("/api/geocode")
+async def geocode_location(query: str = Query(..., min_length=2)):
+    """Convert city/state query to ZIP code and coordinates."""
+    result = await geocode_service.geocode(query)
+    if not result:
+        raise HTTPException(status_code=404, detail="Location not found")
+    return result
 

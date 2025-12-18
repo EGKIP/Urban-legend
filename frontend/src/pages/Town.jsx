@@ -80,7 +80,7 @@ export default function Town() {
   }
 
   return (
-    <div className="w-full min-h-[calc(100vh-120px)]">
+    <div className="w-full flex-1 flex flex-col">
       <TownHeader town={data?.town} loading={loading} />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">

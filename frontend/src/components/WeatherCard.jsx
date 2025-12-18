@@ -40,14 +40,29 @@ export default function WeatherCard({ lat, lon }) {
 
   if (error || !weather) return null
 
-  const iconUrl = `https://openweathermap.org/img/wn/${weather.icon}.png`
+  const iconUrl = weather.icon
+    ? `https://openweathermap.org/img/wn/${weather.icon}@2x.png`
+    : null
 
   return (
-    <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700/40 flex items-center gap-2">
-      <img src={iconUrl} alt={weather.description} className="w-8 h-8" />
-      <div>
-        <p className="text-slate-500 text-[10px] uppercase tracking-wider font-medium">Weather</p>
-        <p className="text-slate-200 font-semibold text-sm">{weather.temp}°F</p>
+    <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700/40 flex items-center gap-1.5">
+      {iconUrl ? (
+        <img
+          src={iconUrl}
+          alt={weather.description || 'Weather'}
+          className="w-10 h-10 -my-1"
+          onError={(e) => e.target.style.display = 'none'}
+        />
+      ) : (
+        <div className="w-8 h-8 rounded-full bg-slate-700/50 flex items-center justify-center">
+          <span className="text-slate-400 text-xs">☀️</span>
+        </div>
+      )}
+      <div className="text-right">
+        <p className="text-slate-100 font-semibold text-base leading-tight">{weather.temp}°F</p>
+        {weather.description && (
+          <p className="text-slate-500 text-[10px] capitalize leading-tight">{weather.description}</p>
+        )}
       </div>
     </div>
   )

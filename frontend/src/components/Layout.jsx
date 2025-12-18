@@ -5,7 +5,7 @@ export default function Layout() {
   const isHome = location.pathname === '/'
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col safe-area-inset">
+    <div className="h-full min-h-screen bg-slate-950 flex flex-col safe-area-inset">
       <nav className={`flex items-center justify-between px-4 sm:px-6 py-3 ${isHome ? 'border-b border-transparent' : 'border-b border-slate-800/60 bg-slate-950/90 backdrop-blur-md'} sticky top-0 z-50 transition-all`}>
         <Link to="/" className="flex items-center gap-2.5 group">
           <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-md shadow-orange-500/20 group-hover:shadow-orange-500/30 transition-shadow">
