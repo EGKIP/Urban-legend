@@ -5,19 +5,23 @@ const API_URL = 'http://localhost:8000'
 export default function WeatherCard({ lat, lon }) {
   const [weather, setWeather] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     if (!lat || !lon) return
-    
+
     const fetchWeather = async () => {
+      setError(false)
       try {
         const res = await fetch(`${API_URL}/api/weather?lat=${lat}&lon=${lon}`)
         if (res.ok) {
           const data = await res.json()
           setWeather(data)
+        } else {
+          setError(true)
         }
-      } catch (err) {
-        console.error('Weather fetch failed')
+      } catch {
+        setError(true)
       } finally {
         setLoading(false)
       }
@@ -34,7 +38,7 @@ export default function WeatherCard({ lat, lon }) {
     )
   }
 
-  if (!weather) return null
+  if (error || !weather) return null
 
   const iconUrl = `https://openweathermap.org/img/wn/${weather.icon}.png`
 

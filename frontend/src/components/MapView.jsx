@@ -26,33 +26,46 @@ export default function MapView({ hotels = [], restaurants = [], activities = []
   ].filter(p => p.lat && p.lon)
 
   return (
-    <div className="w-full h-[400px] rounded-xl overflow-hidden border border-slate-800/50">
-      <MapContainer
-        center={[center.lat, center.lon]}
-        zoom={13}
-        style={{ height: '100%', width: '100%' }}
-        scrollWheelZoom={true}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {allPlaces.map((place, i) => (
-          <Marker key={i} position={[place.lat, place.lon]} icon={icons[place.type]}>
-            <Popup>
-              <div className="text-sm">
-                <p className="font-semibold text-slate-900">{place.name}</p>
-                {place.rating && (
-                  <p className="text-slate-600">⭐ {place.rating}</p>
-                )}
-                {place.address && (
-                  <p className="text-slate-500 text-xs mt-1">{place.address}</p>
-                )}
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+    <div className="space-y-3">
+      <div className="w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-xl overflow-hidden border border-slate-800/50">
+        <MapContainer
+          center={[center.lat, center.lon]}
+          zoom={13}
+          style={{ height: '100%', width: '100%' }}
+          scrollWheelZoom={true}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {allPlaces.map((place, i) => (
+            <Marker key={i} position={[place.lat, place.lon]} icon={icons[place.type]}>
+              <Popup>
+                <div className="text-sm">
+                  <p className="font-semibold text-slate-900">{place.name}</p>
+                  {place.rating && (
+                    <p className="text-slate-600">⭐ {place.rating}</p>
+                  )}
+                  {place.address && (
+                    <p className="text-slate-500 text-xs mt-1">{place.address}</p>
+                  )}
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
+      <div className="flex items-center justify-center gap-4 text-xs text-slate-400">
+        <span className="flex items-center gap-1.5">
+          <span className="w-3 h-3 rounded-full bg-blue-500"></span> Hotels
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="w-3 h-3 rounded-full bg-orange-500"></span> Restaurants
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="w-3 h-3 rounded-full bg-green-500"></span> Activities
+        </span>
+      </div>
     </div>
   )
 }

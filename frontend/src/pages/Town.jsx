@@ -17,21 +17,22 @@ export default function Town() {
   const [regenerating, setRegenerating] = useState(false)
   const [viewMode, setViewMode] = useState('list')
 
-  useEffect(() => {
-    const fetchTown = async () => {
-      setLoading(true)
-      setError(null)
-      try {
-        const res = await fetch(`${API_URL}/api/town?zip=${zip}`)
-        if (!res.ok) throw new Error('Town not found')
-        const json = await res.json()
-        setData(json)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
-      }
+  const fetchTown = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch(`${API_URL}/api/town?zip=${zip}`)
+      if (!res.ok) throw new Error('Town not found')
+      const json = await res.json()
+      setData(json)
+    } catch (err) {
+      setError(err.message === 'Failed to fetch' ? 'Connection failed' : err.message)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchTown()
   }, [zip])
 
@@ -49,16 +50,31 @@ export default function Town() {
   }
 
   if (error) {
+    const isNetworkError = error === 'Connection failed'
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center px-6">
         <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
           <WarningIcon className="w-7 h-7 text-red-400" />
         </div>
-        <h1 className="text-xl font-semibold text-slate-100 mb-2">ZIP Code Not Found</h1>
-        <p className="text-slate-400 text-sm mb-5">We couldn't find data for ZIP code {zip}</p>
-        <Link to="/" className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors">
-          Try another ZIP
-        </Link>
+        <h1 className="text-xl font-semibold text-slate-100 mb-2">
+          {isNetworkError ? 'Connection Error' : 'ZIP Code Not Found'}
+        </h1>
+        <p className="text-slate-400 text-sm mb-5">
+          {isNetworkError ? 'Could not connect to the server' : `We couldn't find data for ZIP code ${zip}`}
+        </p>
+        <div className="flex gap-3">
+          {isNetworkError && (
+            <button
+              onClick={fetchTown}
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium rounded-lg transition-colors"
+            >
+              Retry
+            </button>
+          )}
+          <Link to="/" className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors">
+            Try another ZIP
+          </Link>
+        </div>
       </div>
     )
   }
@@ -67,7 +83,7 @@ export default function Town() {
     <div className="w-full min-h-[calc(100vh-120px)]">
       <TownHeader town={data?.town} loading={loading} />
 
-      <div className="max-w-6xl mx-auto px-6 py-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2.5">
             <TrendingUpIcon className="w-4.5 h-4.5 text-orange-400" />
