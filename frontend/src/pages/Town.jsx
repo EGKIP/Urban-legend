@@ -80,10 +80,11 @@ export default function Town() {
   }
 
   return (
-    <div className="w-full flex-1 flex flex-col">
+    <div className="w-full flex-1 flex flex-col bg-slate-950">
       <TownHeader town={data?.town} loading={loading} />
 
-      <div className="flex-1 flex flex-col max-w-6xl w-full mx-auto px-4 sm:px-6 py-4 sm:py-6">
+      <div className="flex-1 flex flex-col w-full px-4 sm:px-6 py-4 sm:py-6">
+        <div className="flex-1 flex flex-col max-w-6xl w-full mx-auto">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2.5">
             <TrendingUpIcon className="w-4.5 h-4.5 text-orange-400" />
@@ -189,6 +190,7 @@ export default function Town() {
         </div>
 
         <StatsBar data={data} loading={loading} />
+        </div>
       </div>
     </div>
   )
