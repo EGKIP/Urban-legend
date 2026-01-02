@@ -5,8 +5,8 @@ export default function Layout() {
   const isHome = location.pathname === '/'
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col">
-      <nav className={`flex items-center justify-between px-6 py-3 ${isHome ? 'border-b border-transparent' : 'border-b border-slate-800/60 bg-slate-950/90 backdrop-blur-md'} sticky top-0 z-50 transition-all`}>
+    <div className="h-full min-h-screen bg-slate-950 flex flex-col safe-area-inset">
+      <nav className={`flex items-center justify-between px-4 sm:px-6 py-3 ${isHome ? 'border-b border-transparent' : 'border-b border-slate-800/60 bg-slate-950/90 backdrop-blur-md'} sticky top-0 z-50 transition-all`}>
         <Link to="/" className="flex items-center gap-2.5 group">
           <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-md shadow-orange-500/20 group-hover:shadow-orange-500/30 transition-shadow">
             <svg className="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -28,11 +28,11 @@ export default function Layout() {
         </div>
       </nav>
 
-      <main className="flex-1">
+      <main className="flex-1 flex flex-col">
         <Outlet />
       </main>
 
-      <footer className="border-t border-slate-800/40 px-6 py-5 bg-slate-950/50">
+      <footer className="border-t border-slate-800/40 px-4 sm:px-6 py-5 bg-slate-950/50">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-slate-500 text-sm">
             Urban Legend &copy; {new Date().getFullYear()}

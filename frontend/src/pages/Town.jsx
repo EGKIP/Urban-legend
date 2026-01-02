@@ -17,21 +17,22 @@ export default function Town() {
   const [regenerating, setRegenerating] = useState(false)
   const [viewMode, setViewMode] = useState('list')
 
-  useEffect(() => {
-    const fetchTown = async () => {
-      setLoading(true)
-      setError(null)
-      try {
-        const res = await fetch(`${API_URL}/api/town?zip=${zip}`)
-        if (!res.ok) throw new Error('Town not found')
-        const json = await res.json()
-        setData(json)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
-      }
+  const fetchTown = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch(`${API_URL}/api/town?zip=${zip}`)
+      if (!res.ok) throw new Error('Town not found')
+      const json = await res.json()
+      setData(json)
+    } catch (err) {
+      setError(err.message === 'Failed to fetch' ? 'Connection failed' : err.message)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchTown()
   }, [zip])
 
@@ -49,25 +50,41 @@ export default function Town() {
   }
 
   if (error) {
+    const isNetworkError = error === 'Connection failed'
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center px-6">
         <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
           <WarningIcon className="w-7 h-7 text-red-400" />
         </div>
-        <h1 className="text-xl font-semibold text-slate-100 mb-2">ZIP Code Not Found</h1>
-        <p className="text-slate-400 text-sm mb-5">We couldn't find data for ZIP code {zip}</p>
-        <Link to="/" className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors">
-          Try another ZIP
-        </Link>
+        <h1 className="text-xl font-semibold text-slate-100 mb-2">
+          {isNetworkError ? 'Connection Error' : 'ZIP Code Not Found'}
+        </h1>
+        <p className="text-slate-400 text-sm mb-5">
+          {isNetworkError ? 'Could not connect to the server' : `We couldn't find data for ZIP code ${zip}`}
+        </p>
+        <div className="flex gap-3">
+          {isNetworkError && (
+            <button
+              onClick={fetchTown}
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium rounded-lg transition-colors"
+            >
+              Retry
+            </button>
+          )}
+          <Link to="/" className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors">
+            Try another ZIP
+          </Link>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="w-full min-h-[calc(100vh-120px)]">
+    <div className="w-full flex-1 flex flex-col bg-slate-950">
       <TownHeader town={data?.town} loading={loading} />
 
-      <div className="max-w-6xl mx-auto px-6 py-6">
+      <div className="flex-1 flex flex-col w-full px-4 sm:px-6 py-4 sm:py-6">
+        <div className="flex-1 flex flex-col max-w-6xl w-full mx-auto">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2.5">
             <TrendingUpIcon className="w-4.5 h-4.5 text-orange-400" />
@@ -137,40 +154,43 @@ export default function Town() {
           </div>
         )}
 
-        {viewMode === 'map' && data?.town ? (
-          <MapView
-            hotels={data?.hotels}
-            restaurants={data?.restaurants}
-            activities={data?.activities}
-            center={{ lat: data.town.lat, lon: data.town.lon }}
-          />
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <DashboardCard
-              title="Top Hotels"
-              icon={BuildingIcon}
-              items={data?.hotels}
-              loading={loading}
-              emptyText="Hotel data coming soon..."
+        <div className="flex-1">
+          {viewMode === 'map' && data?.town ? (
+            <MapView
+              hotels={data?.hotels}
+              restaurants={data?.restaurants}
+              activities={data?.activities}
+              center={{ lat: data.town.lat, lon: data.town.lon }}
             />
-            <DashboardCard
-              title="Popular Eats"
-              icon={ForkKnifeIcon}
-              items={data?.restaurants}
-              loading={loading}
-              emptyText="Restaurant data coming soon..."
-            />
-            <DashboardCard
-              title="Things to Do"
-              icon={CompassIcon}
-              items={data?.activities}
-              loading={loading}
-              emptyText="Activity data coming soon..."
-            />
-          </div>
-        )}
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              <DashboardCard
+                title="Top Hotels"
+                icon={BuildingIcon}
+                items={data?.hotels}
+                loading={loading}
+                emptyText="Hotel data coming soon..."
+              />
+              <DashboardCard
+                title="Popular Eats"
+                icon={ForkKnifeIcon}
+                items={data?.restaurants}
+                loading={loading}
+                emptyText="Restaurant data coming soon..."
+              />
+              <DashboardCard
+                title="Things to Do"
+                icon={CompassIcon}
+                items={data?.activities}
+                loading={loading}
+                emptyText="Activity data coming soon..."
+              />
+            </div>
+          )}
+        </div>
 
         <StatsBar data={data} loading={loading} />
+        </div>
       </div>
     </div>
   )

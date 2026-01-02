@@ -28,7 +28,7 @@ export default function TownHeader({ town, loading }) {
 
   return (
     <header className="w-full border-b border-slate-800/40 bg-slate-900/20">
-      <div className="max-w-6xl mx-auto px-6 py-5">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/15">
