@@ -78,10 +78,6 @@ export default function TownHeader({ town, loading }) {
 
           <div className="flex items-center gap-2.5">
             <WeatherCard lat={town.lat} lon={town.lon} />
-            <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700/40">
-              <p className="text-slate-500 text-[10px] uppercase tracking-wider font-medium">ZIP</p>
-              <p className="text-slate-200 font-semibold text-sm">{town.zip_code}</p>
-            </div>
             {localTime && (
               <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700/40">
                 <ClockIcon className="w-4 h-4 text-slate-500" />
@@ -91,6 +87,13 @@ export default function TownHeader({ town, loading }) {
                 </div>
               </div>
             )}
+            <div className="flex items-center gap-2 px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700/40">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-orange-500"></span>
+              </span>
+              <p className="text-slate-300 text-xs font-medium">Live</p>
+            </div>
           </div>
         </div>
       </div>
