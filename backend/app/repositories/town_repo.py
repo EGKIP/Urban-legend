@@ -49,6 +49,8 @@ class TownRepository:
                     place_type=place_type,
                     name=item["name"],
                     address=item.get("address"),
+                    lat=item.get("lat"),
+                    lon=item.get("lon"),
                     rating=item.get("rating"),
                     review_count=item.get("review_count", 0),
                     price=item.get("price"),

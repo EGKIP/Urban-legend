@@ -39,5 +39,7 @@ class Place(Base):
             "phone": self.phone,
             "address": self.address,
             "categories": self.categories or [],
+            "lat": self.lat,
+            "lon": self.lon,
         }
 

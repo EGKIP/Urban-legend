@@ -80,11 +80,11 @@ export default function Town() {
   }
 
   return (
-    <div className="w-full flex-1 flex flex-col bg-slate-950">
+    <div className="flex-1">
       <TownHeader town={data?.town} loading={loading} />
 
-      <div className="flex-1 flex flex-col w-full px-4 sm:px-6 py-4 sm:py-6">
-        <div className="flex-1 flex flex-col max-w-6xl w-full mx-auto">
+      <div className="px-4 sm:px-6 py-4 sm:py-6">
+        <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2.5">
             <TrendingUpIcon className="w-4.5 h-4.5 text-orange-400" />
@@ -154,40 +154,38 @@ export default function Town() {
           </div>
         )}
 
-        <div className="flex-1">
-          {viewMode === 'map' && data?.town ? (
-            <MapView
-              hotels={data?.hotels}
-              restaurants={data?.restaurants}
-              activities={data?.activities}
-              center={{ lat: data.town.lat, lon: data.town.lon }}
+        {viewMode === 'map' && data?.town ? (
+          <MapView
+            hotels={data?.hotels}
+            restaurants={data?.restaurants}
+            activities={data?.activities}
+            center={{ lat: data.town.lat, lon: data.town.lon }}
+          />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <DashboardCard
+              title="Top Hotels"
+              icon={BuildingIcon}
+              items={data?.hotels}
+              loading={loading}
+              emptyText="Hotel data coming soon..."
             />
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              <DashboardCard
-                title="Top Hotels"
-                icon={BuildingIcon}
-                items={data?.hotels}
-                loading={loading}
-                emptyText="Hotel data coming soon..."
-              />
-              <DashboardCard
-                title="Popular Eats"
-                icon={ForkKnifeIcon}
-                items={data?.restaurants}
-                loading={loading}
-                emptyText="Restaurant data coming soon..."
-              />
-              <DashboardCard
-                title="Things to Do"
-                icon={CompassIcon}
-                items={data?.activities}
-                loading={loading}
-                emptyText="Activity data coming soon..."
-              />
-            </div>
-          )}
-        </div>
+            <DashboardCard
+              title="Popular Eats"
+              icon={ForkKnifeIcon}
+              items={data?.restaurants}
+              loading={loading}
+              emptyText="Restaurant data coming soon..."
+            />
+            <DashboardCard
+              title="Things to Do"
+              icon={CompassIcon}
+              items={data?.activities}
+              loading={loading}
+              emptyText="Activity data coming soon..."
+            />
+          </div>
+        )}
 
         <StatsBar data={data} loading={loading} />
         </div>
