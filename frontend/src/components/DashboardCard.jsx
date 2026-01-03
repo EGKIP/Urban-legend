@@ -1,7 +1,13 @@
-import { ChevronRightIcon, StarIcon } from './Icons'
+import { useState } from 'react'
+import { ChevronRightIcon, ChevronDownIcon, StarIcon } from './Icons'
+
+const INITIAL_COUNT = 5
 
 export default function DashboardCard({ title, icon: Icon, items, loading, emptyText }) {
+  const [expanded, setExpanded] = useState(false)
   const itemCount = items?.length || 0
+  const displayItems = expanded ? items : items?.slice(0, INITIAL_COUNT)
+  const hasMore = itemCount > INITIAL_COUNT
 
   return (
     <div className="bg-slate-900/70 rounded-xl border border-slate-800/50 shadow-lg shadow-black/10 flex flex-col">
@@ -22,7 +28,7 @@ export default function DashboardCard({ title, icon: Icon, items, loading, empty
       <div className="p-4">
         {loading ? (
           <div className="space-y-3">
-            {[1, 2, 3, 4].map((i) => (
+            {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="animate-pulse flex items-center gap-3">
                 <div className="w-14 h-14 bg-slate-800/70 rounded-lg flex-shrink-0" />
                 <div className="flex-1 min-w-0">
@@ -33,11 +39,22 @@ export default function DashboardCard({ title, icon: Icon, items, loading, empty
             ))}
           </div>
         ) : items?.length > 0 ? (
-          <ul className="space-y-2.5">
-            {items.map((item, idx) => (
-              <PlaceItem key={item.id || idx} item={item} />
-            ))}
-          </ul>
+          <>
+            <ul className="space-y-2.5">
+              {displayItems.map((item, idx) => (
+                <PlaceItem key={item.id || idx} item={item} />
+              ))}
+            </ul>
+            {hasMore && (
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 text-sm text-slate-400 hover:text-orange-400 border border-slate-700/50 hover:border-orange-500/30 rounded-lg transition-all"
+              >
+                <ChevronDownIcon className={`w-4 h-4 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+                {expanded ? 'Show less' : `Show ${itemCount - INITIAL_COUNT} more`}
+              </button>
+            )}
+          </>
         ) : (
           <div className="flex flex-col items-center justify-center py-10 text-center">
             <div className="w-12 h-12 mb-3 rounded-xl bg-slate-800/60 flex items-center justify-center text-slate-600">

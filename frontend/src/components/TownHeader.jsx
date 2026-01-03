@@ -1,7 +1,40 @@
-import { MapPinIcon } from './Icons'
+import { useState, useEffect } from 'react'
+import { MapPinIcon, ClockIcon } from './Icons'
 import WeatherCard from './WeatherCard'
 
+function useLocalTime(lat, lon) {
+  const [time, setTime] = useState(null)
+
+  useEffect(() => {
+    if (!lat || !lon) return
+
+    const updateTime = () => {
+      try {
+        const tzName = Intl.DateTimeFormat().resolvedOptions().timeZone
+        const formatter = new Intl.DateTimeFormat('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+          timeZone: tzName
+        })
+        setTime(formatter.format(new Date()))
+      } catch {
+        const now = new Date()
+        setTime(now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }))
+      }
+    }
+
+    updateTime()
+    const interval = setInterval(updateTime, 30000)
+    return () => clearInterval(interval)
+  }, [lat, lon])
+
+  return time
+}
+
 export default function TownHeader({ town, loading }) {
+  const localTime = useLocalTime(town?.lat, town?.lon)
+
   if (loading) {
     return (
       <header className="w-full border-b border-slate-800/40 bg-slate-900/30">
@@ -49,10 +82,15 @@ export default function TownHeader({ town, loading }) {
               <p className="text-slate-500 text-[10px] uppercase tracking-wider font-medium">ZIP</p>
               <p className="text-slate-200 font-semibold text-sm">{town.zip_code}</p>
             </div>
-            <div className="hidden sm:block px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700/40">
-              <p className="text-slate-500 text-[10px] uppercase tracking-wider font-medium">Coordinates</p>
-              <p className="text-slate-300 font-mono text-xs">{town.lat?.toFixed(4)}, {town.lon?.toFixed(4)}</p>
-            </div>
+            {localTime && (
+              <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700/40">
+                <ClockIcon className="w-4 h-4 text-slate-500" />
+                <div>
+                  <p className="text-slate-500 text-[10px] uppercase tracking-wider font-medium">Local</p>
+                  <p className="text-slate-200 font-semibold text-sm">{localTime}</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
