@@ -36,6 +36,16 @@ export default function Town() {
     fetchTown()
   }, [zip])
 
+  // Dynamic page title
+  useEffect(() => {
+    if (data?.town) {
+      document.title = `${data.town.city}, ${data.town.state} | Urban Legend`
+    } else {
+      document.title = 'Urban Legend'
+    }
+    return () => { document.title = 'Urban Legend' }
+  }, [data?.town])
+
   const regenerateLegend = async () => {
     setRegenerating(true)
     try {

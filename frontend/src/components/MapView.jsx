@@ -41,13 +41,23 @@ export default function MapView({ hotels = [], restaurants = [], activities = []
           {allPlaces.map((place, i) => (
             <Marker key={i} position={[place.lat, place.lon]} icon={icons[place.type]}>
               <Popup>
-                <div className="text-sm">
+                <div className="text-sm min-w-[180px]">
                   <p className="font-semibold text-slate-900">{place.name}</p>
                   {place.rating && (
-                    <p className="text-slate-600">⭐ {place.rating}</p>
+                    <p className="text-slate-600">⭐ {place.rating} {place.price && `· ${place.price}`}</p>
                   )}
                   {place.address && (
                     <p className="text-slate-500 text-xs mt-1">{place.address}</p>
+                  )}
+                  {place.url && (
+                    <a
+                      href={place.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block mt-2 text-xs text-orange-600 hover:text-orange-700 font-medium"
+                    >
+                      View details →
+                    </a>
                   )}
                 </div>
               </Popup>
