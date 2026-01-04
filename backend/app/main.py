@@ -139,3 +139,10 @@ async def geocode_location(query: str = Query(..., min_length=2)):
         raise HTTPException(status_code=404, detail="Location not found")
     return result
 
+
+@app.get("/api/autocomplete")
+async def autocomplete_location(query: str = Query(..., min_length=2)):
+    """Return location suggestions for autocomplete."""
+    suggestions = await geocode_service.autocomplete(query, limit=5)
+    return {"suggestions": suggestions}
+

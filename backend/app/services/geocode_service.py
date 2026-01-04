@@ -130,6 +130,65 @@ class GeocodeService:
         }
         return states.get(state_name, state_name[:2].upper() if state_name else "")
 
+    async def autocomplete(self, query: str, limit: int = 5) -> list[dict]:
+        """Return multiple location suggestions for autocomplete."""
+        query = query.strip()
+        if not query or len(query) < 2:
+            return []
+
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(
+                    self.BASE_URL,
+                    params={
+                        "q": f"{query}, USA",
+                        "format": "json",
+                        "limit": limit,
+                        "countrycodes": "us",
+                        "addressdetails": 1,
+                    },
+                    headers={"User-Agent": "UrbanLegend/1.0"},
+                    timeout=10.0,
+                )
+
+                if resp.status_code != 200:
+                    return []
+
+                results = resp.json()
+                suggestions = []
+                seen = set()
+
+                for result in results:
+                    address = result.get("address", {})
+                    city = (address.get("city") or address.get("town") or
+                            address.get("village") or address.get("municipality") or
+                            result.get("name"))
+                    state = address.get("state")
+
+                    if not city or not state:
+                        continue
+
+                    state_abbr = self._get_state_abbr(state)
+                    key = f"{city.lower()},{state_abbr.lower()}"
+
+                    if key in seen:
+                        continue
+                    seen.add(key)
+
+                    suggestions.append({
+                        "city": city,
+                        "state": state_abbr,
+                        "state_name": state,
+                        "display": f"{city}, {state_abbr}",
+                        "lat": float(result.get("lat", 0)),
+                        "lon": float(result.get("lon", 0)),
+                    })
+
+                return suggestions
+
+        except Exception:
+            return []
+
 
 geocode_service = GeocodeService()
 
