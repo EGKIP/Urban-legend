@@ -46,7 +46,7 @@ export default function About() {
       <div className="bg-slate-900/50 rounded-2xl border border-slate-800/50 p-6 mb-10">
         <h2 className="text-xl font-semibold text-white mb-3">Our Mission</h2>
         <p className="text-slate-300 leading-relaxed mb-4">
-          Urban Legend transforms how you explore America. Whether you&apos;re planning a road trip,
+          Urban Legend transforms how you explore your surroundings. Whether you&apos;re planning a road trip,
           relocating to a new city, or simply curious about a place, we bring together everything
           you need to know in one beautiful dashboard.
         </p>
@@ -88,7 +88,7 @@ export default function About() {
           <FeatureCard
             icon={NewspaperIcon}
             title="Local News"
-            description="Stay informed with trending news from the area to understand what's happening locally."
+            description="We compile the latest trending news from Google News for your area, keeping you informed about what's happening locally."
           />
         </div>
       </div>
@@ -134,7 +134,7 @@ export default function About() {
 
       {/* Footer note */}
       <p className="text-center text-slate-500 text-sm mt-10">
-        Made with curiosity and code. Explore responsibly.
+        Made with curiosity. Explore responsibly.
       </p>
     </div>
   )
