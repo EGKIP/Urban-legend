@@ -11,6 +11,10 @@ const FEATURED_TOWNS = [
   { zip: '60601', name: 'Chicago', state: 'IL' },
   { zip: '33139', name: 'Miami Beach', state: 'FL' },
   { zip: '98101', name: 'Seattle', state: 'WA' },
+  { zip: '78701', name: 'Austin', state: 'TX' },
+  { zip: '80202', name: 'Denver', state: 'CO' },
+  { zip: '89101', name: 'Las Vegas', state: 'NV' },
+  { zip: '37201', name: 'Nashville', state: 'TN' },
 ]
 
 export default function Home() {
