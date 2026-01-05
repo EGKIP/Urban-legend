@@ -36,7 +36,21 @@ export default function TrendingNews({ city }) {
     )
   }
 
-  if (error || articles.length === 0) return null
+  if (error) {
+    return (
+      <div className="flex items-center justify-center py-8 text-slate-500 text-sm">
+        Unable to load news
+      </div>
+    )
+  }
+
+  if (articles.length === 0) {
+    return (
+      <div className="flex items-center justify-center py-8 text-slate-500 text-sm">
+        No news available for this area
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1">
