@@ -263,7 +263,7 @@ export default function Home() {
               <button
                 key={town.zip}
                 onClick={() => navigate(`/town/${town.zip}`)}
-                className="px-4 py-2 bg-slate-800/40 border border-slate-700/50 hover:border-orange-500/40 hover:bg-slate-800/70 rounded-full text-sm text-slate-300 hover:text-orange-400 transition-all focus:outline-none focus:ring-2 focus:ring-orange-500/30"
+                className="px-4 py-2 bg-slate-800/40 border border-slate-700/50 hover:border-orange-500/40 hover:bg-slate-800/70 rounded-full text-sm text-slate-300 hover:text-orange-400 transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500/30"
               >
                 {town.name}, {town.state}
               </button>
