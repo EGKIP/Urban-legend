@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { MapPinIcon, BuildingIcon, ForkKnifeIcon, CompassIcon, BookOpenIcon, SparklesIcon, MapIcon, NewspaperIcon } from '../components/Icons'
 
 function FeatureCard({ icon: Icon, title, description }) {
@@ -132,8 +133,19 @@ export default function About() {
         </div>
       </div>
 
+      {/* CTA */}
+      <div className="text-center mt-10">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-xl transition-all hover:shadow-lg hover:shadow-orange-500/20"
+        >
+          <MapPinIcon className="w-4 h-4" />
+          Start Exploring
+        </Link>
+      </div>
+
       {/* Footer note */}
-      <p className="text-center text-slate-500 text-sm mt-10">
+      <p className="text-center text-slate-500 text-sm mt-8">
         Made with curiosity. Explore responsibly.
       </p>
     </div>
