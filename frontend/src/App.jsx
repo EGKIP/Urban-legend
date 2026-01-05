@@ -4,6 +4,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 import Home from './pages/Home'
 import Town from './pages/Town'
 import About from './pages/About'
+import NotFound from './pages/NotFound'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="town/:zip" element={<Town />} />
             <Route path="about" element={<About />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>

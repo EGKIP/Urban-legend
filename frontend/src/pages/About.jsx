@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { MapPinIcon, BuildingIcon, ForkKnifeIcon, CompassIcon, BookOpenIcon, SparklesIcon, MapIcon, NewspaperIcon } from '../components/Icons'
+import { MapPinIcon, BuildingIcon, ForkKnifeIcon, CompassIcon, SparklesIcon, MapIcon, NewspaperIcon } from '../components/Icons'
 
 function FeatureCard({ icon: Icon, title, description }) {
   return (
