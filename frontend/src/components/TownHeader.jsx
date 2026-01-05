@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { MapPinIcon, ClockIcon } from './Icons'
+import { Link } from 'react-router-dom'
+import { MapPinIcon, ClockIcon, ArrowLeftIcon } from './Icons'
 import WeatherCard from './WeatherCard'
 
 function useLocalTime(lat, lon) {
@@ -63,7 +64,14 @@ export default function TownHeader({ town, loading }) {
     <header className="w-full border-b border-slate-800/40 bg-slate-900/20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <Link
+              to="/"
+              className="w-9 h-9 rounded-lg bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700/40 flex items-center justify-center transition-colors"
+              title="Back to search"
+            >
+              <ArrowLeftIcon className="w-4 h-4 text-slate-400" />
+            </Link>
             <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/15">
               <MapPinIcon className="w-5 h-5 text-white" />
             </div>
