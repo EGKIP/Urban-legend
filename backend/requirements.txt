@@ -8,11 +8,17 @@ sqlalchemy==2.0.25
 psycopg2-binary==2.9.9
 alembic==1.13.1
 
-# Cache
+# Cache (optional)
 redis==5.0.1
 
 # HTTP client
 httpx==0.26.0
+
+# AI
+groq==0.4.2
+
+# News parsing
+feedparser==6.0.10
 
 # Utilities
 pydantic==2.6.1
