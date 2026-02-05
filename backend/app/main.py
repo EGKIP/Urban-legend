@@ -18,11 +18,16 @@ from app.repositories import TownRepository, LegendRepository
 zip_service = ZipLookupService()
 weather_service = WeatherService()
 
+import os
+
 app = FastAPI(title="Urban Legend API", version="0.1.0")
+
+# CORS origins - add production domain via CORS_ORIGINS env var
+cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
