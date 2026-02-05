@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MapPinIcon } from '../components/Icons'
-
-const API_URL = 'http://localhost:8000'
+import { API_URL } from '../config'
 
 const FEATURED_TOWNS = [
   { zip: '10001', name: 'New York', state: 'NY' },

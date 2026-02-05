@@ -5,8 +5,7 @@ import DashboardCard from '../components/DashboardCard'
 import TrendingNews from '../components/TrendingNews'
 import MapView from '../components/MapView'
 import { BuildingIcon, ForkKnifeIcon, CompassIcon, BookOpenIcon, XIcon, WarningIcon, TrendingUpIcon, NewspaperIcon, RefreshIcon, MapIcon, ListIcon } from '../components/Icons'
-
-const API_URL = 'http://localhost:8000'
+import { API_URL } from '../config'
 
 export default function Town() {
   const { zip } = useParams()

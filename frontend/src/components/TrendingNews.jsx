@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ChevronRightIcon } from './Icons'
-
-const API_URL = 'http://localhost:8000'
+import { API_URL } from '../config'
 
 export default function TrendingNews({ city }) {
   const [articles, setArticles] = useState([])
