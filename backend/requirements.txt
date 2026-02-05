@@ -1,26 +1,26 @@
 # Core
-fastapi==0.109.2
-uvicorn[standard]==0.27.1
-python-dotenv==1.0.1
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+python-dotenv>=1.0.0
 
 # Database
-sqlalchemy==2.0.25
-psycopg2-binary==2.9.9
-alembic==1.13.1
+sqlalchemy>=2.0.25
+psycopg2-binary>=2.9.9
+alembic>=1.13.0
 
 # Cache (optional)
-redis==5.0.1
+redis>=5.0.0
 
 # HTTP client
-httpx==0.26.0
+httpx>=0.26.0
 
 # AI
-groq==0.4.2
+groq>=0.4.0
 
 # News parsing
-feedparser==6.0.10
+feedparser>=6.0.10
 
 # Utilities
-pydantic==2.6.1
-pydantic-settings==2.1.0
+pydantic>=2.6.0
+pydantic-settings>=2.1.0
 
