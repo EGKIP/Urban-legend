@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import Layout from './components/Layout'
 import ErrorBoundary from './components/ErrorBoundary'
 import Home from './pages/Home'
@@ -19,6 +20,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <SpeedInsights />
     </ErrorBoundary>
   )
 }
